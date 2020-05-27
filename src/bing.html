@@ -1,0 +1,88 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script type='text/javascript'>
+    var BingMapsKey = 'Au3RXsIXVmGfZemoOvlzmNkZGFriW6E--7LOIp8CXSzs8D6j6U5hxUomcaz5bJGC';
+      
+    function geocode() {
+        var query = document.getElementById('input').value;
+
+        var geocodeRequest = "http://dev.virtualearth.net/REST/v1/Locations?query=" + encodeURIComponent(query) + "&jsonp=GeocodeCallback&key=" + BingMapsKey;
+
+        CallRestService(geocodeRequest, GeocodeCallback);
+    }
+
+    function GeocodeCallback(response) {
+        var output = document.getElementById('output');
+
+        if (response &&
+            response.resourceSets &&
+            response.resourceSets.length > 0 &&
+            response.resourceSets[0].resources) {
+
+            var results = response.resourceSets[0].resources;
+
+            var html = ['<table><tr><td>Name</td><td>Latitude</td><td>Longitude</td></tr>'];
+
+            for (var i = 0; i < results.length; i++) {
+                html.push('<tr><td>', results[i].name, '</td><td>', results[i].point.coordinates[0], '</td><td>', results[i].point.coordinates[1], '</td></tr>');
+            }
+
+            html.push('</table>');
+
+            output.innerHTML = html.join('');
+        } else {
+            output.innerHTML = "No results found.";
+        }
+    }
+
+    function CallRestService(request) {
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        script.setAttribute("src", request);
+        document.body.appendChild(script);
+    }
+    </script>
+</head>
+<body>
+    <input type="text" id="input" value="New York" />
+    <input type="button" onClick="geocode()" value="Search" /><br />
+    <div id="output"></div>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+	<script type='text/javascript'>
+    function GetMap() {
+        var map = new Microsoft.Maps.Map('#myMap', {
+            credentials: 'Au3RXsIXVmGfZemoOvlzmNkZGFriW6E--7LOIp8CXSzs8D6j6U5hxUomcaz5bJGC'
+        });
+
+        //Request the user's location
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var loc = new Microsoft.Maps.Location(
+                position.coords.latitude,
+                position.coords.longitude);
+
+                console.log(loc);
+            //Add a pushpin at the user's location.
+            var pin = new Microsoft.Maps.Pushpin(loc);
+            map.entities.push(pin);
+
+            //Center the map on the user's location.
+            map.setView({ center: loc, zoom: 15 });
+        });
+    }
+    </script>
+    <script type='text/javascript' src='http://www.bing.com/api/maps/mapcontrol?callback=GetMap' async defer></script>
+</head>
+<body>
+    <div id="myMap" style="position:relative;width:600px;height:400px;"></div>
+</body>
+</html>
